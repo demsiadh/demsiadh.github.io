@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"demsiadh.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="JWT全称：JSON Web Token  （官网：https:&#x2F;&#x2F;jwt.io&#x2F;） 定义了一种简洁的、自包含的格式，用于在通信双方以json数据格式安全的传输信息。由于数字签名的存在，这些信息是可靠的。  简洁：是指jwt就是一个简单的字符串。可以在请求参数或者是请求头当中直接传递。 自包含：指的是jwt令牌，看似是一个随机的字符串，但是我们是可以根据自身的需求在jwt令牌中存储自定义的数据内容">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JWT令牌">
+<meta property="og:url" content="http://demsiadh.github.io/2023/10/16/JWT%E4%BB%A4%E7%89%8C/index.html">
+<meta property="og:site_name" content="个人博客">
+<meta property="og:description" content="JWT全称：JSON Web Token  （官网：https:&#x2F;&#x2F;jwt.io&#x2F;） 定义了一种简洁的、自包含的格式，用于在通信双方以json数据格式安全的传输信息。由于数字签名的存在，这些信息是可靠的。  简洁：是指jwt就是一个简单的字符串。可以在请求参数或者是请求头当中直接传递。 自包含：指的是jwt令牌，看似是一个随机的字符串，但是我们是可以根据自身的需求在jwt令牌中存储自定义的数据内容">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://demsiadh.github.io/2023/10/16/JWT%E4%BB%A4%E7%89%8C/image-20231016220631126.png">
+<meta property="og:image" content="http://demsiadh.github.io/2023/10/16/JWT%E4%BB%A4%E7%89%8C/image-20231016220737539.png">
+<meta property="og:image" content="http://demsiadh.github.io/2023/10/16/JWT%E4%BB%A4%E7%89%8C/image-20231016222429421.png">
+<meta property="og:image" content="http://demsiadh.github.io/2023/10/16/JWT%E4%BB%A4%E7%89%8C/image-20231016222622521.png">
+<meta property="og:image" content="http://demsiadh.github.io/2023/10/16/JWT%E4%BB%A4%E7%89%8C/image-20230106212805480.png">
+<meta property="og:image" content="http://demsiadh.github.io/2023/10/16/JWT%E4%BB%A4%E7%89%8C/image-20230106213419461.png">
+<meta property="og:image" content="http://demsiadh.github.io/2023/10/16/JWT%E4%BB%A4%E7%89%8C/image-20230106213910049.png">
+<meta property="og:image" content="http://demsiadh.github.io/2023/10/16/JWT%E4%BB%A4%E7%89%8C/image-20230106214331443.png">
+<meta property="og:image" content="http://demsiadh.github.io/2023/10/16/JWT%E4%BB%A4%E7%89%8C/image-20230107095010089.png">
+<meta property="og:image" content="http://demsiadh.github.io/2023/10/16/JWT%E4%BB%A4%E7%89%8C/image-20230112122130564.png">
+<meta property="article:published_time" content="2023-10-16T14:01:43.000Z">
+<meta property="article:modified_time" content="2023-10-16T14:53:49.458Z">
+<meta property="article:author" content="Kangjiahao">
+<meta property="article:tag" content="function">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://demsiadh.github.io/2023/10/16/JWT%E4%BB%A4%E7%89%8C/image-20231016220631126.png">
+
+<link rel="canonical" href="http://demsiadh.github.io/2023/10/16/JWT%E4%BB%A4%E7%89%8C/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>JWT令牌 | 个人博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">个人博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://demsiadh.github.io/2023/10/16/JWT%E4%BB%A4%E7%89%8C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Kangjiahao">
+      <meta itemprop="description" content="这是我自己的个人博客，用来记录学习">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JWT令牌
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-10-16 22:01:43 / 修改时间：22:53:49" itemprop="dateCreated datePublished" datetime="2023-10-16T22:01:43+08:00">2023-10-16</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>JWT全称：JSON Web Token  （官网：<a target="_blank" rel="noopener" href="https://jwt.io/%EF%BC%89">https://jwt.io/）</a></p>
+<p>定义了一种<strong>简洁</strong>的、<strong>自包含</strong>的格式，用于在通信双方以json数据格式安全的传输信息。由于数字签名的存在，这些信息是可靠的。</p>
+<blockquote>
+<p>简洁：是指jwt就是一个简单的字符串。可以在请求参数或者是请求头当中直接传递。</p>
+<p>自包含：指的是jwt令牌，看似是一个随机的字符串，但是我们是可以根据自身的需求在jwt令牌中存储自定义的数据内容。如：可以直接在jwt令牌中存储用户的相关信息。</p>
+<p>简单来讲，jwt就是将原始的json数据格式进行了安全的封装，这样就可以直接基于jwt在通信双方安全的进行信息传输了。</p>
+</blockquote>
+<span id="more"></span>
+
+<h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>JWT的组成： （JWT令牌由三个部分组成，三个部分之间使用英文的点来分割）</p>
+<ul>
+<li><p>第一部分：Header(头）， 记录令牌类型、签名算法等。 例如：{“alg”:”HS256”,”type”:”JWT”}</p>
+</li>
+<li><p>第二部分：Payload(有效载荷），携带一些自定义信息、默认信息等。 例如：{“id”:”1”,”username”:”Tom”}</p>
+</li>
+<li><p>第三部分：Signature(签名），防止Token被篡改、确保安全性。将header、payload，并加入指定秘钥，通过指定签名算法计算而来。</p>
+<blockquote>
+<p>签名的目的就是为了防jwt令牌被篡改，而正是因为jwt令牌最后一个部分数字签名的存在，所以整个jwt 令牌是非常安全可靠的。一旦jwt令牌当中任何一个部分、任何一个字符被篡改了，整个令牌在校验的时候都会失败，所以它是非常安全可靠的。</p>
+</blockquote>
+</li>
+</ul>
+<p><img src="/2023/10/16/JWT%E4%BB%A4%E7%89%8C/image-20231016220631126.png" alt="image-20231016220631126"></p>
+<blockquote>
+<p>JWT是如何将原始的JSON格式数据，转变为字符串的呢？</p>
+<p>其实在生成JWT令牌时，会对JSON格式的数据进行一次编码：进行base64编码</p>
+<p>Base64：是一种基于64个可打印的字符来表示二进制数据的编码方式。既然能编码，那也就意味着也能解码。所使用的64个字符分别是A到Z、a到z、 0- 9，一个加号，一个斜杠，加起来就是64个字符。任何数据经过base64编码之后，最终就会通过这64个字符来表示。当然还有一个符号，那就是等号。等号它是一个补位的符号</p>
+<p>需要注意的是Base64是编码方式，而不是加密方式。</p>
+</blockquote>
+<p><img src="/2023/10/16/JWT%E4%BB%A4%E7%89%8C/image-20231016220737539.png" alt="image-20231016220737539"></p>
+<p>JWT令牌最典型的应用场景就是登录认证：</p>
+<ol>
+<li>在浏览器发起请求来执行登录操作，此时会访问登录的接口，如果登录成功之后，我们需要生成一个jwt令牌，将生成的 jwt令牌返回给前端。</li>
+<li>前端拿到jwt令牌之后，会将jwt令牌存储起来。在后续的每一次请求中都会将jwt令牌携带到服务端。</li>
+<li>服务端统一拦截请求之后，先来判断一下这次请求有没有把令牌带过来，如果没有带过来，直接拒绝访问，如果带过来了，还要校验一下令牌是否是有效。如果有效，就直接放行进行请求的处理。</li>
+</ol>
+<h1 id="生成和校验"><a href="#生成和校验" class="headerlink" title="生成和校验"></a>生成和校验</h1><p>简单介绍了JWT令牌以及JWT令牌的组成之后，接下来我们就来学习基于Java代码如何生成和校验JWT令牌。</p>
+<p>首先我们先来实现JWT令牌的生成。要想使用JWT令牌，需要先引入JWT的依赖：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- JWT依赖--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>io.jsonwebtoken<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jjwt<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>0.9.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>在引入完JWT来赖后，就可以调用工具包中提供的API来完成JWT令牌的生成和校验</p>
+<p>工具类：Jwts</p>
+</blockquote>
+<p>生成JWT代码实现：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">genJwt</span><span class="params">()</span>&#123;</span><br><span class="line">    Map&lt;String,Object&gt; claims = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">    claims.put(<span class="string">&quot;id&quot;</span>,<span class="number">1</span>);</span><br><span class="line">    claims.put(<span class="string">&quot;username&quot;</span>,<span class="string">&quot;Tom&quot;</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="type">String</span> <span class="variable">jwt</span> <span class="operator">=</span> Jwts.builder()</span><br><span class="line">        .setClaims(claims) <span class="comment">//自定义内容(载荷)          </span></span><br><span class="line">        .signWith(SignatureAlgorithm.HS256, <span class="string">&quot;itheima&quot;</span>) <span class="comment">//签名算法        </span></span><br><span class="line">        .setExpiration(<span class="keyword">new</span> <span class="title class_">Date</span>(System.currentTimeMillis() + <span class="number">24</span>*<span class="number">3600</span>*<span class="number">1000</span>)) <span class="comment">//有效期   </span></span><br><span class="line">        .compact();</span><br><span class="line">    </span><br><span class="line">    System.out.println(jwt);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行测试方法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZXhwIjoxNjk3NTUyNTA2LCJ1c2VybmFtZSI6IlRvbSJ9.uBWwMMe5Z5C5letRhijjfKNPl2Ey7F66ie1o3Qe3xNs</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果就是生成的JWT令牌,，通过英文的点分割对三个部分进行分割，我们可以将生成的令牌复制一下，然后打开JWT的官网，将生成的令牌直接放在Encoded位置，此时就会自动的将令牌解析出来。</p>
+<p><img src="/2023/10/16/JWT%E4%BB%A4%E7%89%8C/image-20231016222429421.png" alt="image-20231016222429421"></p>
+<p>实现了JWT令牌的生成，下面我们接着使用Java代码来校验JWT令牌(解析生成的令牌)：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">parseJwt</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="type">Claims</span> <span class="variable">claims</span> <span class="operator">=</span> Jwts.parser()</span><br><span class="line">        .setSigningKey(<span class="string">&quot;itheima&quot;</span>)<span class="comment">//指定签名密钥（必须保证和生成令牌时使用相同的签名密钥）  </span></span><br><span class="line">	    .parseClaimsJws(<span class="string">&quot;eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZXhwIjoxNjcyNzI5NzMwfQ.fHi0Ub8npbyt71UqLXDdLyipptLgxBUg_mSuGJtXtBk&quot;</span>)</span><br><span class="line">        .getBody();</span><br><span class="line"></span><br><span class="line">    System.out.println(claims);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行测试方法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;id=1, exp=1672729730&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>令牌解析后，我们可以看到id和过期时间，如果在解析的过程当中没有报错，就说明解析成功了。</p>
+</blockquote>
+<p>下面我们做一个测试：把令牌header中的数字9变为8，运行测试方法后发现报错：</p>
+<blockquote>
+<p>原header： eyJhbGciOiJIUzI1NiJ9</p>
+<p>修改为： eyJhbGciOiJIUzI1NiJ8</p>
+</blockquote>
+<p><img src="/2023/10/16/JWT%E4%BB%A4%E7%89%8C/image-20231016222622521.png" alt="image-20231016222622521"></p>
+<p>结论：篡改令牌中的任何一个字符，在对令牌进行解析时都会报错，所以JWT令牌是非常安全可靠的。</p>
+<p>我们继续测试：修改生成令牌的时指定的过期时间，修改为1分钟</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">genJwt</span><span class="params">()</span>&#123;</span><br><span class="line">    Map&lt;String,Object&gt; claims = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">    claims.put(“id”,<span class="number">1</span>);</span><br><span class="line">    claims.put(“username”,“Tom”);</span><br><span class="line">    <span class="type">String</span> <span class="variable">jwt</span> <span class="operator">=</span> Jwts.builder()</span><br><span class="line">        .setClaims(claims) <span class="comment">//自定义内容(载荷)          </span></span><br><span class="line">        .signWith(SignatureAlgorithm.HS256, “itheima”) <span class="comment">//签名算法        </span></span><br><span class="line">        .setExpiration(<span class="keyword">new</span> <span class="title class_">Date</span>(System.currentTimeMillis() + <span class="number">60</span>*<span class="number">1000</span>)) <span class="comment">//有效期60秒   </span></span><br><span class="line">        .compact();</span><br><span class="line">    </span><br><span class="line">    System.out.println(jwt);</span><br><span class="line">    <span class="comment">//输出结果：eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZXhwIjoxNjczMDA5NzU0fQ.RcVIR65AkGiax-ID6FjW60eLFH3tPTKdoK7UtE4A1ro</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">parseJwt</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="type">Claims</span> <span class="variable">claims</span> <span class="operator">=</span> Jwts.parser()</span><br><span class="line">        .setSigningKey(<span class="string">&quot;itheima&quot;</span>)<span class="comment">//指定签名密钥</span></span><br><span class="line">.parseClaimsJws(<span class="string">&quot;eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZXhwIjoxNjczMDA5NzU0fQ.RcVIR65AkGiax-ID6FjW60eLFH3tPTKdoK7UtE4A1ro&quot;</span>)</span><br><span class="line">        .getBody();</span><br><span class="line"></span><br><span class="line">    System.out.println(claims);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>等待1分钟之后运行测试方法发现也报错了，说明：JWT令牌过期后，令牌就失效了，解析的为非法令牌。</p>
+<p>通过以上测试，我们在使用JWT令牌时需要注意：</p>
+<ul>
+<li><p>JWT校验时使用的签名秘钥，必须和生成JWT令牌时使用的秘钥是配套的。</p>
+</li>
+<li><p>如果JWT令牌解析校验时报错，则说明 JWT令牌被篡改 或 失效了，令牌非法。</p>
+</li>
+</ul>
+<h1 id="登录下发令牌"><a href="#登录下发令牌" class="headerlink" title="登录下发令牌"></a>登录下发令牌</h1><p>JWT令牌的生成和校验的基本操作我们已经学习完了，接下来我们就需要在案例当中通过JWT令牌技术来跟踪会话。具体的思路我们前面已经分析过了，主要就是两步操作：</p>
+<ol>
+<li>生成令牌<ul>
+<li>在登录成功之后来生成一个JWT令牌，并且把这个令牌直接返回给前端</li>
+</ul>
+</li>
+<li>校验令牌<ul>
+<li>拦截前端请求，从请求中获取到令牌，对令牌进行解析校验</li>
+</ul>
+</li>
+</ol>
+<p>那我们首先来完成：登录成功之后生成JWT令牌，并且把令牌返回给前端。</p>
+<p>JWT令牌怎么返回给前端呢？此时我们就需要再来看一下接口文档当中关于登录接口的描述（主要看响应数据）：</p>
+<ul>
+<li><p>响应数据</p>
+<p>参数格式：application&#x2F;json</p>
+<p>参数说明：</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>类型</th>
+<th>是否必须</th>
+<th>默认值</th>
+<th>备注</th>
+<th>其他信息</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>code</td>
+<td>number</td>
+<td>必须</td>
+<td></td>
+<td>响应码, 1 成功 ; 0  失败</td>
+<td></td>
+</tr>
+<tr>
+<td>msg</td>
+<td>string</td>
+<td>非必须</td>
+<td></td>
+<td>提示信息</td>
+<td></td>
+</tr>
+<tr>
+<td>data</td>
+<td>string</td>
+<td>必须</td>
+<td></td>
+<td>返回的数据 , jwt令牌</td>
+<td></td>
+</tr>
+</tbody></table>
+<p>响应数据样例：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;code&quot;</span><span class="punctuation">:</span> <span class="number">1</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;msg&quot;</span><span class="punctuation">:</span> <span class="string">&quot;success&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;data&quot;</span><span class="punctuation">:</span> <span class="string">&quot;eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoi6YeR5bq4IiwiaWQiOjEsInVzZXJuYW1lIjoiamlueW9uZyIsImV4cCI6MTY2MjIwNzA0OH0.KkUc_CXJZJ8Dd063eImx4H9Ojfrr6XMJ-yVzaWCVZCo&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>备注说明</p>
+<p>用户登录成功后，系统会自动下发JWT令牌，然后在后续的每次请求中，都需要在请求头header中携带到服务端，请求头的名称为 token ，值为 登录时下发的JWT令牌。</p>
+<p>如果检测到用户未登录，则会返回如下固定错误信息：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">	<span class="attr">&quot;code&quot;</span><span class="punctuation">:</span> <span class="number">0</span><span class="punctuation">,</span></span><br><span class="line">	<span class="attr">&quot;msg&quot;</span><span class="punctuation">:</span> <span class="string">&quot;NOT_LOGIN&quot;</span><span class="punctuation">,</span></span><br><span class="line">	<span class="attr">&quot;data&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">null</span></span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>解读完接口文档中的描述了，目前我们先来完成令牌的生成和令牌的下发，我们只需要生成一个令牌返回给前端就可以了。</p>
+<p><strong>实现步骤：</strong></p>
+<ol>
+<li>引入JWT工具类<ul>
+<li>在项目工程下创建com.itheima.utils包，并把提供JWT工具类复制到该包下</li>
+</ul>
+</li>
+<li>登录完成后，调用工具类生成JWT令牌并返回</li>
+</ol>
+<p><strong>JWT工具类</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">JwtUtils</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">String</span> <span class="variable">signKey</span> <span class="operator">=</span> <span class="string">&quot;itheima&quot;</span>;<span class="comment">//签名密钥</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">Long</span> <span class="variable">expire</span> <span class="operator">=</span> <span class="number">43200000L</span>; <span class="comment">//有效时间</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 生成JWT令牌</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> claims JWT第二部分负载 payload 中存储的内容</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String <span class="title function_">generateJwt</span><span class="params">(Map&lt;String, Object&gt; claims)</span>&#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">jwt</span> <span class="operator">=</span> Jwts.builder()</span><br><span class="line">                .addClaims(claims)<span class="comment">//自定义信息（有效载荷）</span></span><br><span class="line">                .signWith(SignatureAlgorithm.HS256, signKey)<span class="comment">//签名算法（头部）</span></span><br><span class="line">                .setExpiration(<span class="keyword">new</span> <span class="title class_">Date</span>(System.currentTimeMillis() + expire))<span class="comment">//过期时间</span></span><br><span class="line">                .compact();</span><br><span class="line">        <span class="keyword">return</span> jwt;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 解析JWT令牌</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> jwt JWT令牌</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> JWT第二部分负载 payload 中存储的内容</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Claims <span class="title function_">parseJWT</span><span class="params">(String jwt)</span>&#123;</span><br><span class="line">        <span class="type">Claims</span> <span class="variable">claims</span> <span class="operator">=</span> Jwts.parser()</span><br><span class="line">                .setSigningKey(signKey)<span class="comment">//指定签名密钥</span></span><br><span class="line">                .parseClaimsJws(jwt)<span class="comment">//指定令牌Token</span></span><br><span class="line">                .getBody();</span><br><span class="line">        <span class="keyword">return</span> claims;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>登录成功，生成JWT令牌并返回</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@Slf4j</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">LoginController</span> &#123;</span><br><span class="line">    <span class="comment">//依赖业务层对象</span></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> EmpService empService;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@PostMapping(&quot;/login&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> Result <span class="title function_">login</span><span class="params">(<span class="meta">@RequestBody</span> Emp emp)</span> &#123;</span><br><span class="line">        <span class="comment">//调用业务层：登录功能</span></span><br><span class="line">        <span class="type">Emp</span> <span class="variable">loginEmp</span> <span class="operator">=</span> empService.login(emp);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//判断：登录用户是否存在</span></span><br><span class="line">        <span class="keyword">if</span>(loginEmp !=<span class="literal">null</span> )&#123;</span><br><span class="line">            <span class="comment">//自定义信息</span></span><br><span class="line">            Map&lt;String , Object&gt; claims = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">            claims.put(<span class="string">&quot;id&quot;</span>, loginEmp.getId());</span><br><span class="line">            claims.put(<span class="string">&quot;username&quot;</span>,loginEmp.getUsername());</span><br><span class="line">            claims.put(<span class="string">&quot;time&quot;</span>,System.currentTimeMillis());</span><br><span class="line"></span><br><span class="line">            <span class="comment">//使用JWT工具类，生成身份令牌</span></span><br><span class="line">            <span class="type">String</span> <span class="variable">token</span> <span class="operator">=</span> JwtUtils.generateJwt(claims);</span><br><span class="line">            <span class="keyword">return</span> Result.success(token);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> Result.error(<span class="string">&quot;用户名或密码错误&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>重启服务，打开postman测试登录接口：</p>
+<p><img src="/2023/10/16/JWT%E4%BB%A4%E7%89%8C/image-20230106212805480.png" alt="image-20230106212805480"></p>
+<p>打开浏览器完成前后端联调操作：利用开发者工具，抓取一下网络请求</p>
+<p><img src="/2023/10/16/JWT%E4%BB%A4%E7%89%8C/image-20230106213419461.png" alt="image-20230106213419461"></p>
+<blockquote>
+<p>登录请求完成后，可以看到JWT令牌已经响应给了前端，此时前端就会将JWT令牌存储在浏览器本地。</p>
+</blockquote>
+<p>服务器响应的JWT令牌存储在本地浏览器哪里了呢？</p>
+<ul>
+<li>在当前案例中，JWT令牌存储在浏览器的本地存储空间local storage中了。 local storage是浏览器的本地存储，在移动端也是支持的。</li>
+</ul>
+<p><img src="/2023/10/16/JWT%E4%BB%A4%E7%89%8C/image-20230106213910049.png" alt="image-20230106213910049"></p>
+<p>我们在发起一个查询部门数据的请求，此时我们可以看到在请求头中包含一个token(JWT令牌)，后续的每一次请求当中，都会将这个令牌携带到服务端。</p>
+<p><img src="/2023/10/16/JWT%E4%BB%A4%E7%89%8C/image-20230106214331443.png" alt="image-20230106214331443"></p>
+<h1 id="过滤器拦截"><a href="#过滤器拦截" class="headerlink" title="过滤器拦截"></a>过滤器拦截</h1><p>接下来最后一步，我们需要使用过滤器Filter来完成案例当中的登录校验功能。</p>
+<p><img src="/2023/10/16/JWT%E4%BB%A4%E7%89%8C/image-20230107095010089.png" alt="image-20230107095010089"></p>
+<p>我们先来回顾下前面分析过的登录校验的基本流程：</p>
+<ul>
+<li><p>要进入到后台管理系统，我们必须先完成登录操作，此时就需要访问登录接口login。</p>
+</li>
+<li><p>登录成功之后，我们会在服务端生成一个JWT令牌，并且把JWT令牌返回给前端，前端会将JWT令牌存储下来。</p>
+</li>
+<li><p>在后续的每一次请求当中，都会将JWT令牌携带到服务端，请求到达服务端之后，要想去访问对应的业务功能，此时我们必须先要校验令牌的有效性。</p>
+</li>
+<li><p>对于校验令牌的这一块操作，我们使用登录校验的过滤器，在过滤器当中来校验令牌的有效性。如果令牌是无效的，就响应一个错误的信息，也不会再去放行访问对应的资源了。如果令牌存在，并且它是有效的，此时就会放行去访问对应的web资源，执行相应的业务操作。</p>
+</li>
+</ul>
+<p>大概清楚了在Filter过滤器的实现步骤了，那在正式开发登录校验过滤器之前，我们思考两个问题：</p>
+<ol>
+<li><p>所有的请求，拦截到了之后，都需要校验令牌吗？</p>
+<ul>
+<li>答案：<strong>登录请求例外</strong></li>
+</ul>
+</li>
+<li><p>拦截到请求后，什么情况下才可以放行，执行业务操作？</p>
+<ul>
+<li>答案：<strong>有令牌，且令牌校验通过(合法)；否则都返回未登录错误结果</strong></li>
+</ul>
+</li>
+</ol>
+<h2 id="具体流程"><a href="#具体流程" class="headerlink" title="具体流程"></a>具体流程</h2><p>我们要完成登录校验，主要是利用Filter过滤器实现，而Filter过滤器的流程步骤：</p>
+<p><img src="/2023/10/16/JWT%E4%BB%A4%E7%89%8C/image-20230112122130564.png" alt="image-20230112122130564"> </p>
+<p>基于上面的业务流程，我们分析出具体的操作步骤：</p>
+<ol>
+<li>获取请求url</li>
+<li>判断请求url中是否包含login，如果包含，说明是登录操作，放行</li>
+<li>获取请求头中的令牌（token）</li>
+<li>判断令牌是否存在，如果不存在，返回错误结果（未登录）</li>
+<li>解析token，如果解析失败，返回错误结果（未登录）</li>
+<li>放行</li>
+</ol>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p><strong>登录校验过滤器：LoginCheckFilter</strong></p>
+<blockquote>
+<p>我们还需要在启动类上面加上一个注解@ServletComponentScan，通过这个@ServletComponentScan注解来开启SpringBoot项目对于Servlet组件的支持。</p>
+<p>@WebFilter(urlPatterns &#x3D; “&#x2F;*”) 代表拦截所有路径的请求</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Slf4j</span></span><br><span class="line"><span class="meta">@WebFilter(urlPatterns = &quot;/*&quot;)</span> <span class="comment">//拦截所有请求</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">LoginCheckFilter</span> <span class="keyword">implements</span> <span class="title class_">Filter</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">doFilter</span><span class="params">(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain chain)</span> <span class="keyword">throws</span> IOException, ServletException &#123;</span><br><span class="line">        <span class="comment">//前置：强制转换为http协议的请求对象、响应对象 （转换原因：要使用子类中特有方法）</span></span><br><span class="line">        <span class="type">HttpServletRequest</span> <span class="variable">request</span> <span class="operator">=</span> (HttpServletRequest) servletRequest;</span><br><span class="line">        <span class="type">HttpServletResponse</span> <span class="variable">response</span> <span class="operator">=</span> (HttpServletResponse) servletResponse;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//1.获取请求url</span></span><br><span class="line">        <span class="type">String</span> <span class="variable">url</span> <span class="operator">=</span> request.getRequestURL().toString();</span><br><span class="line">        log.info(<span class="string">&quot;请求路径：&#123;&#125;&quot;</span>, url); <span class="comment">//请求路径：http://localhost:8080/login</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="comment">//2.判断请求url中是否包含login，如果包含，说明是登录操作，放行</span></span><br><span class="line">        <span class="keyword">if</span>(url.contains(<span class="string">&quot;/login&quot;</span>))&#123;</span><br><span class="line">            chain.doFilter(request, response);<span class="comment">//放行请求</span></span><br><span class="line">            <span class="keyword">return</span>;<span class="comment">//结束当前方法的执行</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="comment">//3.获取请求头中的令牌（token）</span></span><br><span class="line">        <span class="type">String</span> <span class="variable">token</span> <span class="operator">=</span> request.getHeader(<span class="string">&quot;token&quot;</span>);</span><br><span class="line">        log.info(<span class="string">&quot;从请求头中获取的令牌：&#123;&#125;&quot;</span>,token);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="comment">//4.判断令牌是否存在，如果不存在，返回错误结果（未登录）</span></span><br><span class="line">        <span class="keyword">if</span>(!StringUtils.hasLength(token))&#123;</span><br><span class="line">            log.info(<span class="string">&quot;Token不存在&quot;</span>);</span><br><span class="line"></span><br><span class="line">            <span class="type">Result</span> <span class="variable">responseResult</span> <span class="operator">=</span> Result.error(<span class="string">&quot;NOT_LOGIN&quot;</span>);</span><br><span class="line">            <span class="comment">//把Result对象转换为JSON格式字符串 (fastjson是阿里巴巴提供的用于实现对象和json的转换工具类)</span></span><br><span class="line">            <span class="type">String</span> <span class="variable">json</span> <span class="operator">=</span> JSONObject.toJSONString(responseResult);</span><br><span class="line">            response.setContentType(<span class="string">&quot;application/json;charset=utf-8&quot;</span>);</span><br><span class="line">            <span class="comment">//响应</span></span><br><span class="line">            response.getWriter().write(json);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//5.解析token，如果解析失败，返回错误结果（未登录）</span></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            JwtUtils.parseJWT(token);</span><br><span class="line">        &#125;<span class="keyword">catch</span> (Exception e)&#123;</span><br><span class="line">            log.info(<span class="string">&quot;令牌解析失败!&quot;</span>);</span><br><span class="line"></span><br><span class="line">            <span class="type">Result</span> <span class="variable">responseResult</span> <span class="operator">=</span> Result.error(<span class="string">&quot;NOT_LOGIN&quot;</span>);</span><br><span class="line">            <span class="comment">//把Result对象转换为JSON格式字符串 (fastjson是阿里巴巴提供的用于实现对象和json的转换工具类)</span></span><br><span class="line">            <span class="type">String</span> <span class="variable">json</span> <span class="operator">=</span> JSONObject.toJSONString(responseResult);</span><br><span class="line">            response.setContentType(<span class="string">&quot;application/json;charset=utf-8&quot;</span>);</span><br><span class="line">            <span class="comment">//响应</span></span><br><span class="line">            response.getWriter().write(json);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="comment">//6.放行</span></span><br><span class="line">        chain.doFilter(request, response);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在上述过滤器的功能实现中，我们使用到了一个第三方json处理的工具包fastjson。我们要想使用，需要引入如下依赖：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>fastjson<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.2.76<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>这样我们就完成了过滤器的实现</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/function/" rel="tag"># function</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/10/16/Maven/" rel="prev" title="Maven">
+      <i class="fa fa-chevron-left"></i> Maven
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/10/16/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" rel="next" title="文件上传">
+      文件上传 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%94%9F%E6%88%90%E5%92%8C%E6%A0%A1%E9%AA%8C"><span class="nav-number">2.</span> <span class="nav-text">生成和校验</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%99%BB%E5%BD%95%E4%B8%8B%E5%8F%91%E4%BB%A4%E7%89%8C"><span class="nav-number">3.</span> <span class="nav-text">登录下发令牌</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%87%E6%BB%A4%E5%99%A8%E6%8B%A6%E6%88%AA"><span class="nav-number">4.</span> <span class="nav-text">过滤器拦截</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B7%E4%BD%93%E6%B5%81%E7%A8%8B"><span class="nav-number">4.1.</span> <span class="nav-text">具体流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="nav-number">4.2.</span> <span class="nav-text">代码实现</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Kangjiahao</p>
+  <div class="site-description" itemprop="description">这是我自己的个人博客，用来记录学习</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Kangjiahao</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
