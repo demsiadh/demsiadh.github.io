@@ -175,10 +175,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2023-10-17 14:56:18 / 修改时间：20:34:24" itemprop="dateCreated datePublished" datetime="2023-10-17T14:56:18+08:00">2023-10-17</time>
+              <time title="创建时间：2023-10-17 14:56:18" itemprop="dateCreated datePublished" datetime="2023-10-17T14:56:18+08:00">2023-10-17</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-10-18 12:35:33" itemprop="dateModified" datetime="2023-10-18T12:35:33+08:00">2023-10-18</time>
+              </span>
 
           
 
@@ -191,160 +197,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="密码加密"><a href="#密码加密" class="headerlink" title="密码加密"></a>密码加密</h1><p>平常密码都是明文保存，安全性太低，我们采用md5对其进行加密之后保存</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">password = DigestUtils.md5DigestAsHex(<span class="string">&quot;要保存的密码&quot;</span>.getBytes());</span><br></pre></td></tr></table></figure>
-
-<p>同时进行比对时也是采用同样的方法进行加密比对</p>
-<h1 id="Swagger"><a href="#Swagger" class="headerlink" title="Swagger"></a>Swagger</h1><h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>Swagger 是一个规范和完整的框架，用于生成、描述、调用和可视化 RESTful 风格的 Web 服务(<a target="_blank" rel="noopener" href="https://swagger.io/">https://swagger.io/</a>)。 它的主要作用是：</p>
-<ol>
-<li><p>使得前后端分离开发更加方便，有利于团队协作</p>
-</li>
-<li><p>接口的文档在线自动生成，降低后端开发人员编写接口文档的负担</p>
-</li>
-<li><p>功能测试 </p>
-<p>Spring已经将Swagger纳入自身的标准，建立了Spring-swagger项目，现在叫Springfox。通过在项目中引入Springfox ，即可非常简单快捷的使用Swagger。</p>
-</li>
-</ol>
-<p>knife4j是为Java MVC框架集成Swagger生成Api文档的增强解决方案,前身是swagger-bootstrap-ui,取名kni4j是希望它能像一把匕首一样小巧,轻量,并且功能强悍!</p>
-<p>目前，一般都使用knife4j框架。</p>
-<h2 id="使用步骤"><a href="#使用步骤" class="headerlink" title="使用步骤"></a>使用步骤</h2><ol>
-<li><p>导入 knife4j 的maven坐标</p>
-<p>在pom.xml中添加依赖</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.github.xiaoymin<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>knife4j-spring-boot-starter<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>在配置类中加入 knife4j 相关配置</p>
-<p>WebMvcConfiguration.java</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 通过knife4j生成接口文档</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="keyword">public</span> Docket <span class="title function_">docket</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">ApiInfo</span> <span class="variable">apiInfo</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ApiInfoBuilder</span>()</span><br><span class="line">                .title(<span class="string">&quot;苍穹外卖项目接口文档&quot;</span>)</span><br><span class="line">                .version(<span class="string">&quot;2.0&quot;</span>)</span><br><span class="line">                .description(<span class="string">&quot;苍穹外卖项目接口文档&quot;</span>)</span><br><span class="line">                .build();</span><br><span class="line">        <span class="type">Docket</span> <span class="variable">docket</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Docket</span>(DocumentationType.SWAGGER_2)</span><br><span class="line">                .apiInfo(apiInfo)</span><br><span class="line">                .select()</span><br><span class="line">                .apis(RequestHandlerSelectors.basePackage(<span class="string">&quot;com.sky.controller&quot;</span>))</span><br><span class="line">                .paths(PathSelectors.any())</span><br><span class="line">                .build();</span><br><span class="line">        <span class="keyword">return</span> docket;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
-
-</li>
-<li><p>设置静态资源映射，否则接口文档页面无法访问</p>
-<p>WebMvcConfiguration.java</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 设置静态资源映射</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> registry</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">addResourceHandlers</span><span class="params">(ResourceHandlerRegistry registry)</span> &#123;</span><br><span class="line">        registry.addResourceHandler(<span class="string">&quot;/doc.html&quot;</span>).addResourceLocations(<span class="string">&quot;classpath:/META-INF/resources/&quot;</span>);</span><br><span class="line">        registry.addResourceHandler(<span class="string">&quot;/webjars/**&quot;</span>).addResourceLocations(<span class="string">&quot;classpath:/META-INF/resources/webjars/&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>访问测试</p>
-<p>接口文档访问路径为 <a href="http://ip:port/doc.html">http://ip:port/doc.html</a> —&gt; <a target="_blank" rel="noopener" href="http://localhost:8080/doc.html">http://localhost:8080/doc.html</a></p>
-</li>
-</ol>
-<h2 id="常用注解"><a href="#常用注解" class="headerlink" title="常用注解"></a>常用注解</h2><table>
-<thead>
-<tr>
-<th><strong>注解</strong></th>
-<th><strong>说明</strong></th>
-</tr>
-</thead>
-<tbody><tr>
-<td>@Api</td>
-<td>用在类上，例如Controller，表示对类的说明</td>
-</tr>
-<tr>
-<td>@ApiModel</td>
-<td>用在类上，例如entity、DTO、VO</td>
-</tr>
-<tr>
-<td>@ApiModelProperty</td>
-<td>用在属性上，描述属性信息</td>
-</tr>
-<tr>
-<td>@ApiOperation</td>
-<td>用在方法上，例如Controller的方法，说明方法的用途、作用</td>
-</tr>
-</tbody></table>
-<h1 id="ThreadLocal"><a href="#ThreadLocal" class="headerlink" title="ThreadLocal"></a>ThreadLocal</h1><p>我们该怎么通过某种方式来动态的获取当前登录员工的员工id？</p>
-<p>思路：每次访问请求都会携带一个token，而我们的员工id又存储在了token中，所以我们可以通过解析token来获得员工id，但是我们要怎么传递给Service层呢？</p>
-<p>答：通过ThreadLocal进行传递。</p>
-<hr>
-<p><strong>介绍：</strong></p>
-<p>ThreadLocal 并不是一个Thread，而是Thread的局部变量。</p>
-<p>ThreadLocal为每个线程提供单独一份存储空间，具有线程隔离的效果，只有在线程内才能获取到对应的值，线程外则不能访</p>
-<p>问。</p>
-<p><strong>常用方法：</strong></p>
-<ul>
-<li>public void set(T value) 	设置当前线程的线程局部变量的值</li>
-<li>public T get() 		返回当前线程所对应的线程局部变量的值</li>
-<li>public void remove()        移除当前线程的线程局部变量</li>
-</ul>
-<p>有了Thread Local我们就能解决上面的问题，当用户请求新增员工时，首先会被拦截器拦截下来，解析token，这个时候可以将</p>
-<p>id存入线程，然后解析token通过执行对应的业务方法，Service层就可以获得该id</p>
-<p><img src="C:/Users/13684/AppData/Roaming/Typora/typora-user-images/image-20231017172334818.png" alt="image-20231017172334818"></p>
-<p>为了解决这个问题，我们定义一个封装了ThreadLocal操作的工具类</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">BaseContext</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> ThreadLocal&lt;Long&gt; threadLocal = <span class="keyword">new</span> <span class="title class_">ThreadLocal</span>&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">setCurrentId</span><span class="params">(Long id)</span> &#123;</span><br><span class="line">        threadLocal.set(id);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Long <span class="title function_">getCurrentId</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> threadLocal.get();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">removeCurrentId</span><span class="params">()</span> &#123;</span><br><span class="line">        threadLocal.remove();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>在解析令牌时，解析出用户id，存入线程中</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">BaseContext.setCurrentId(empId);</span><br></pre></td></tr></table></figure>
-
-<p>需要用到用户id时，取出</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 设置创建用户和修改用户</span></span><br><span class="line"><span class="comment">// 通过ThreadLocal获得当前操作用户id</span></span><br><span class="line">employee.setCreateUser(BaseContext.getCurrentId());</span><br><span class="line">employee.setUpdateUser(BaseContext.getCurrentId());</span><br><span class="line"></span><br><span class="line"><span class="comment">// 移除线程id</span></span><br><span class="line">BaseContext.removeCurrentId();</span><br></pre></td></tr></table></figure>
-
-<h1 id="统一格式化日期类型"><a href="#统一格式化日期类型" class="headerlink" title="统一格式化日期类型"></a>统一格式化日期类型</h1><p>由于我们的日期，转化为json字符串传递给前端时，格式会发生改变，所以我们需要统一格式</p>
-<p>其实通过每个日期加上注解格式化也可以，但是对于项目而言，这种方法效率太低了</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@JsonFormat(pattern = &quot;yyyy-MM-dd HH:mm:ss&quot;)</span></span><br><span class="line"><span class="keyword">private</span> LocalDateTime updateTime</span><br></pre></td></tr></table></figure>
-
-<hr>
-<p>所以我们可以通过SpringMVC的消息转换器来做到统一格式化日期</p>
-<p>首先我们设置对象映射器</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 对象映射器:基于jackson将Java对象转为json，或者将json转为Java对象</span></span><br><span class="line"><span class="comment"> * 将JSON解析为Java对象的过程称为 [从JSON反序列化Java对象]</span></span><br><span class="line"><span class="comment"> * 从Java对象生成JSON的过程称为 [序列化Java对象到JSON]</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">JacksonObjectMapper</span> <span class="keyword">extends</span> <span class="title class_">ObjectMapper</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">DEFAULT_DATE_FORMAT</span> <span class="operator">=</span> <span class="string">&quot;yyyy-MM-dd&quot;</span>;</span><br><span class="line">    <span class="comment">//public static final String DEFAULT_DATE_TIME_FORMAT = &quot;yyyy-MM-dd HH:mm:ss&quot;;</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">DEFAULT_DATE_TIME_FORMAT</span> <span class="operator">=</span> <span class="string">&quot;yyyy-MM-dd HH:mm&quot;</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">DEFAULT_TIME_FORMAT</span> <span class="operator">=</span> <span class="string">&quot;HH:mm:ss&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">JacksonObjectMapper</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="built_in">super</span>();</span><br><span class="line">        <span class="comment">//收到未知属性时不报异常</span></span><br><span class="line">        <span class="built_in">this</span>.configure(FAIL_ON_UNKNOWN_PROPERTIES, <span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//反序列化时，属性不存在的兼容处理</span></span><br><span class="line">        <span class="built_in">this</span>.getDeserializationConfig().withoutFeatures(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);</span><br><span class="line"></span><br><span class="line">        <span class="type">SimpleModule</span> <span class="variable">simpleModule</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SimpleModule</span>()</span><br><span class="line">                .addDeserializer(LocalDateTime.class, <span class="keyword">new</span> <span class="title class_">LocalDateTimeDeserializer</span>(DateTimeFormatter.ofPattern(DEFAULT_DATE_TIME_FORMAT)))</span><br><span class="line">                .addDeserializer(LocalDate.class, <span class="keyword">new</span> <span class="title class_">LocalDateDeserializer</span>(DateTimeFormatter.ofPattern(DEFAULT_DATE_FORMAT)))</span><br><span class="line">                .addDeserializer(LocalTime.class, <span class="keyword">new</span> <span class="title class_">LocalTimeDeserializer</span>(DateTimeFormatter.ofPattern(DEFAULT_TIME_FORMAT)))</span><br><span class="line">                .addSerializer(LocalDateTime.class, <span class="keyword">new</span> <span class="title class_">LocalDateTimeSerializer</span>(DateTimeFormatter.ofPattern(DEFAULT_DATE_TIME_FORMAT)))</span><br><span class="line">                .addSerializer(LocalDate.class, <span class="keyword">new</span> <span class="title class_">LocalDateSerializer</span>(DateTimeFormatter.ofPattern(DEFAULT_DATE_FORMAT)))</span><br><span class="line">                .addSerializer(LocalTime.class, <span class="keyword">new</span> <span class="title class_">LocalTimeSerializer</span>(DateTimeFormatter.ofPattern(DEFAULT_TIME_FORMAT)));</span><br><span class="line"></span><br><span class="line">        <span class="comment">//注册功能模块 例如，可以添加自定义序列化器和反序列化器</span></span><br><span class="line">        <span class="built_in">this</span>.registerModule(simpleModule);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>其次我们在WebMvcConfiguration中扩展SpringMVC的消息转换器，统一对日期类型进行格式处理</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">    * 扩展Spring MVC框架的消息转化器</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@param</span> converters</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">   <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">extendMessageConverters</span><span class="params">(List&lt;HttpMessageConverter&lt;?&gt;&gt; converters)</span> &#123;</span><br><span class="line">       log.info(<span class="string">&quot;扩展消息转换器...&quot;</span>);</span><br><span class="line">       <span class="comment">//创建一个消息转换器对象</span></span><br><span class="line">       <span class="type">MappingJackson2HttpMessageConverter</span> <span class="variable">converter</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">MappingJackson2HttpMessageConverter</span>();</span><br><span class="line">       <span class="comment">//需要为消息转换器设置一个对象转换器，对象转换器可以将Java对象序列化为json数据</span></span><br><span class="line">       converter.setObjectMapper(<span class="keyword">new</span> <span class="title class_">JacksonObjectMapper</span>());</span><br><span class="line">       <span class="comment">//将自己的消息转化器加入容器中</span></span><br><span class="line">       converters.add(<span class="number">0</span>,converter);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
-
-<p>这样就完成了日期的统一格式化处理</p>
-<h1 id="公共字段自动填充"><a href="#公共字段自动填充" class="headerlink" title="公共字段自动填充"></a>公共字段自动填充</h1><p>对于一个项目我们每次新增数据和修改数据的时候都会添加或者修改<strong>创建时间</strong>，<strong>创建人id</strong>，<strong>最后一次修改时间</strong>，<strong>修改人id</strong>，，而这些字段就属于公共字段，如果我们每次都为其添加，效率太低了，并且代码冗余，下面我们就根据Spring的<strong>AOP切面编程</strong>结合<strong>注解</strong>，来为新增和修改功能进行增强。</p>
-<table>
-<thead>
-<tr>
-<th><strong>序号</strong></th>
-<th><strong>字段名</strong></th>
-<th><strong>含义</strong></th>
-<th><strong>数据类型</strong></th>
-</tr>
-</thead>
-<tbody><tr>
-<td>1</td>
-<td>create_time</td>
-<td>创建时间</td>
-<td>datetime</td>
-</tr>
-<tr>
-<td>2</td>
-<td>create_user</td>
-<td>创建人id</td>
-<td>bigint</td>
-</tr>
-<tr>
-<td>3</td>
-<td>update_time</td>
-<td>修改时间</td>
-<td>datetime</td>
-</tr>
-<tr>
-<td>4</td>
-<td>update_user</td>
-<td>修改人id</td>
-<td>bigint</td>
-</tr>
-</tbody></table>
-<p>而针对于这些字段，我们的赋值方式为： </p>
-<p>1). 在新增数据时, 将createTime、updateTime 设置为当前时间, createUser、updateUser设置为当前登录用户ID。</p>
-<p>2). 在更新数据时, 将updateTime 设置为当前时间, updateUser设置为当前登录用户ID。</p>
-<p><strong>实现步骤：</strong></p>
-<p>1). 自定义注解 AutoFill，用于标识需要进行公共字段自动填充的方法(注解中需要传入value，值为枚举类)</p>
-<p>2). 自定义切面类 AutoFillAspect，统一拦截加入了 AutoFill 注解的方法，通过反射为公共字段赋值</p>
-<p>3). 在 Mapper 的方法上加入 AutoFill 注解</p>
-<p><strong>代码开发：</strong></p>
-<p>首先定义枚举类，来标记mapper方法的类型(Insert or Update)</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 数据库操作类型</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> <span class="title class_">OperationType</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 更新操作</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    UPDATE,</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 插入操作</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    INSERT</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>其次自定义注解AutoFill</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 自定义注解，用于切面编程，自动填充公共字段</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Target(ElementType.METHOD)</span></span><br><span class="line"><span class="meta">@Retention(RetentionPolicy.RUNTIME)</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> AutoFill &#123;</span><br><span class="line">    <span class="comment">// 数据库操作类型</span></span><br><span class="line">    OperationType <span class="title function_">value</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>最后自定义切面类AutoFillAspect</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 自定义切面，实现公共字段自动填充处理逻辑</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Aspect</span> <span class="comment">// 当前类为切面类</span></span><br><span class="line"><span class="meta">@Slf4j</span></span><br><span class="line"><span class="meta">@Component</span>  <span class="comment">// 被Spring管理</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">AutoFillAspect</span> &#123;</span><br><span class="line">    <span class="comment">// 切入点</span></span><br><span class="line">    <span class="meta">@Pointcut(&quot;execution(* com.sky.mapper.*.*(..)) &amp;&amp; @annotation(com.sky.annotation.AutoFill)&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">autoFillPointCut</span><span class="params">()</span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 前置通知,在通知中给公共字段进行赋值</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Before(&quot;autoFillPointCut()&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">autoFill</span><span class="params">(JoinPoint joinPoint)</span>&#123;</span><br><span class="line">        log.debug(<span class="string">&quot;开始填充公共字段&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 获取到当前被拦截的方法的上面的数据库操作类型</span></span><br><span class="line">        <span class="type">MethodSignature</span> <span class="variable">signature</span> <span class="operator">=</span> (MethodSignature) joinPoint.getSignature(); <span class="comment">// 获取方法签名对象</span></span><br><span class="line">        <span class="type">AutoFill</span> <span class="variable">autoFill</span> <span class="operator">=</span> signature.getMethod().getAnnotation(AutoFill.class);<span class="comment">// 获取注解对象</span></span><br><span class="line">        <span class="type">OperationType</span> <span class="variable">operationType</span> <span class="operator">=</span> autoFill.value(); <span class="comment">// 获取数据库操作类型</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 获取到当前被拦截方法的参数</span></span><br><span class="line">        Object[] args = joinPoint.getArgs();</span><br><span class="line">        <span class="keyword">if</span> (args == <span class="literal">null</span> || args.length == <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="type">Object</span> <span class="variable">entity</span> <span class="operator">=</span> args[<span class="number">0</span>];</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 准备赋值的数据</span></span><br><span class="line">        <span class="type">LocalDateTime</span> <span class="variable">now</span> <span class="operator">=</span> LocalDateTime.now();</span><br><span class="line">        <span class="type">Long</span> <span class="variable">currentId</span> <span class="operator">=</span> BaseContext.getCurrentId();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 根据当前不同的操作类型，为对应的属性进行赋值</span></span><br><span class="line">        <span class="keyword">if</span> (operationType.equals(OperationType.INSERT))&#123;</span><br><span class="line">            <span class="comment">// 为4个公共字段赋值</span></span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="type">Method</span> <span class="variable">setCreateTime</span> <span class="operator">=</span> entity.getClass().getDeclaredMethod(AutoFillConstant.SET_CREATE_TIME, LocalDateTime.class);</span><br><span class="line">                <span class="type">Method</span> <span class="variable">setCreateUser</span> <span class="operator">=</span> entity.getClass().getDeclaredMethod(AutoFillConstant.SET_CREATE_USER, Long.class);</span><br><span class="line">                <span class="type">Method</span> <span class="variable">setUpdateTime</span> <span class="operator">=</span> entity.getClass().getDeclaredMethod(AutoFillConstant.SET_UPDATE_TIME, LocalDateTime.class);</span><br><span class="line">                <span class="type">Method</span> <span class="variable">setUpdateUser</span> <span class="operator">=</span> entity.getClass().getDeclaredMethod(AutoFillConstant.SET_UPDATE_USER, Long.class);</span><br><span class="line"></span><br><span class="line">                <span class="comment">// 通过反射来为对象属性赋值</span></span><br><span class="line">                setCreateTime.invoke(entity, now);</span><br><span class="line">                setUpdateTime.invoke(entity, now);</span><br><span class="line">                setCreateUser.invoke(entity, currentId);</span><br><span class="line">                setUpdateUser.invoke(entity, currentId);</span><br><span class="line"></span><br><span class="line">            &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">RuntimeException</span>(e);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (operationType.equals(OperationType.UPDATE)) &#123;</span><br><span class="line">            <span class="comment">// 为2个公共字段赋值</span></span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="type">Method</span> <span class="variable">setUpdateTime</span> <span class="operator">=</span> entity.getClass().getDeclaredMethod(AutoFillConstant.SET_UPDATE_TIME, LocalDateTime.class);</span><br><span class="line">                <span class="type">Method</span> <span class="variable">setUpdateUser</span> <span class="operator">=</span> entity.getClass().getDeclaredMethod(AutoFillConstant.SET_UPDATE_USER, Long.class);</span><br><span class="line"></span><br><span class="line">                <span class="comment">// 通过反射来为对象属性赋值</span></span><br><span class="line">                setUpdateTime.invoke(entity, now);</span><br><span class="line">                setUpdateUser.invoke(entity, currentId);</span><br><span class="line"></span><br><span class="line">            &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">RuntimeException</span>(e);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>最后把注解标记在响应的方法上面，启动测试，即可</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 新增员工</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> employee</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@AutoFill(OperationType.INSERT)</span></span><br><span class="line"><span class="keyword">void</span> <span class="title function_">add</span><span class="params">(Employee employee)</span>;</span><br></pre></td></tr></table></figure>
-
-
+          <p>本文章记录了苍穹外卖项目的个人所得</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/10/17/%E8%8B%8D%E7%A9%B9%E5%A4%96%E5%8D%96/">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
